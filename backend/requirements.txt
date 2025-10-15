@@ -1,0 +1,25 @@
+# FastAPI and server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Pydantic (with settings support)
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# PyTorch CPU version (latest)
+torch==2.8.0+cpu
+torchvision==0.23.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Image processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Type checking (optional, for development)
+mypy>=1.7.0
+types-Pillow>=10.1.0

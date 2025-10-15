@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  backend:
+    image: deepfake-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VERSION=3.11-slim
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV_FILE=/app/env.example
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

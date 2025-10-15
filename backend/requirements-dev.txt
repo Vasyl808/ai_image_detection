@@ -1,0 +1,21 @@
+# Development dependencies
+-r requirements.txt
+
+# Testing
+pytest
+pytest-asyncio
+pytest-cov
+httpx
+
+# Code quality
+black
+flake8
+mypy
+isort
+
+# Documentation
+mkdocs
+mkdocs-material
+
+# Visualization (for testing)
+matplotlib
