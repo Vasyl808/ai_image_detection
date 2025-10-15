@@ -10,6 +10,5 @@ export type {
   GradCAMExplanation,
   DetectionResponse,
   HealthCheckResponse,
-  CleanupResponse,
   ApiError,
 } from "./api.types";

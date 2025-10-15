@@ -49,15 +49,6 @@ export interface HealthCheckResponse {
 }
 
 /**
- * Cleanup response
- */
-export interface CleanupResponse {
-  success: boolean;
-  deleted_files: number;
-  message: string;
-}
-
-/**
  * API error response
  */
 export interface ApiError {

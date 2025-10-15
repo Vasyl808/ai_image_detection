@@ -9,7 +9,6 @@ import apiClient from "./apiClient";
 import type {
   DetectionResponse,
   HealthCheckResponse,
-  CleanupResponse,
   ApiError,
 } from "../../types";
 
@@ -63,26 +62,6 @@ export async function checkHealth(): Promise<HealthCheckResponse> {
     return response.data;
   } catch (error) {
     throw new Error("Failed to check health status");
-  }
-}
-
-/**
- * Clean up old result files
- * 
- * @param maxAgeHours - Maximum age of files to keep (in hours)
- * @returns Cleanup response with number of deleted files
- * @throws {Error} If the request fails
- */
-export async function cleanupOldResults(
-  maxAgeHours: number = 24
-): Promise<CleanupResponse> {
-  try {
-    const response = await apiClient.delete<CleanupResponse>(
-      `/cleanup?max_age_hours=${maxAgeHours}`
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to cleanup old results");
   }
 }
 

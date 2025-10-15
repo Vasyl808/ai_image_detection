@@ -4,6 +4,7 @@ Main FastAPI application.
 This is the entry point for the Deepfake Detection API.
 """
 
+import asyncio
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -16,6 +17,7 @@ from app.api import api_router
 from app.api.deps import initialize_model
 from app.core.config import settings
 from app.core.logging_config import setup_logging, get_logger
+from app.services import FileService
 
 # Setup logging
 setup_logging()
@@ -47,14 +49,21 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     settings.RESULTS_DIR.mkdir(exist_ok=True)
     logger.info(f"Results directory: {settings.RESULTS_DIR.absolute()}")
     
+    cleanup_stop_event = asyncio.Event()
+    cleanup_task = asyncio.create_task(
+        FileService.run_daily_cleanup_scheduler(cleanup_stop_event)
+    )
+    
     logger.info("Application startup complete")
     logger.info("=" * 60)
     
-    yield
-    
-    # Shutdown
-    logger.info("Shutting down application...")
-    logger.info("Cleanup complete")
+    try:
+        yield
+    finally:
+        logger.info("Shutting down application...")
+        cleanup_stop_event.set()
+        await cleanup_task
+        logger.info("Cleanup complete")
 
 
 # Create FastAPI application

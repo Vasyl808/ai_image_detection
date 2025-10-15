@@ -7,7 +7,6 @@ from app.schemas.detection import (
     PredictionResult,
     Probabilities,
     GradCAMExplanation,
-    CleanupResponse,
     HealthResponse,
     ErrorResponse,
 )
@@ -17,7 +16,6 @@ __all__ = [
     "PredictionResult",
     "Probabilities",
     "GradCAMExplanation",
-    "CleanupResponse",
     "HealthResponse",
     "ErrorResponse",
 ]

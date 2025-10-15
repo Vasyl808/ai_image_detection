@@ -37,7 +37,22 @@ ai_image_detection/
 
 ---
 
-## Local Development
+## Quick Start
+
+- **Run with Docker Compose**
+  1. **Backend**: `cd backend` → `docker compose up --build`
+  2. **Frontend** *(new terminal)*: `cd frontend` → `docker compose up --build`
+  3. Access API at http://localhost:8000 and UI at http://localhost:8080
+  4. Stop each service with `docker compose down`
+- **Run locally without Docker**
+  1. Copy `backend/.env.example` to `.env` and adjust values as needed
+  2. Start backend (FastAPI) using the virtualenv instructions below
+  3. Copy `frontend/.env.example` to `.env` if you need a custom `VITE_API_URL`
+  4. Start frontend with Vite dev server; it proxies `/api` to `http://localhost:8000`
+
+---
+
+## Local Development (Detailed)
 
 ### Backend (FastAPI)
 
@@ -46,6 +61,7 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate  # Windows: .\.venv\Scripts\activate
 pip install -r requirements.txt
+cp .env.example .env  # Configure MODEL_CHECKPOINT_PATH if needed
 python run.py
 ```
 
@@ -57,14 +73,15 @@ Docs (Swagger): http://localhost:8000/docs
 ```bash
 cd frontend
 npm install
+cp .env.example .env  # Optional: override VITE_API_URL
 npm run dev
 ```
 
-Frontend: http://localhost:3000
+Frontend: http://localhost:3000 (proxies API to `http://localhost:8000`)
 
 ---
 
-## Docker Usage
+## Docker Usage (Detailed)
 
 ### Backend Container
 
@@ -79,13 +96,17 @@ docker run --rm -p 8000:8000 deepfake-backend
 ```bash
 cd frontend
 docker build -t deepfake-frontend .
-docker run --rm -p 8080:8080 deepfake-frontend
+docker run --rm -p 8080:8080 \
+  -e NGINX_BACKEND_URL=http://localhost:8000/ \
+  deepfake-frontend
 ```
 
-Frontend will be served at http://localhost:8080. Configure the API URL with a build arg:
+Frontend will be served at http://localhost:8080. Configure the API URL at build time if you need a different backend endpoint:
 
 ```bash
-docker build -t deepfake-frontend --build-arg VITE_API_URL=http://localhost:8000 .
+docker build -t deepfake-frontend \
+  --build-arg VITE_API_URL=http://localhost:8000 \
+  .
 ```
 
 ### Backend via Docker Compose
@@ -95,7 +116,7 @@ cd backend
 docker compose up --build
 ```
 
-- Backend: http://localhost:8000
+Backend: http://localhost:8000
 
 Stop service:
 
@@ -110,7 +131,7 @@ cd frontend
 docker compose up --build
 ```
 
-- Frontend: http://localhost:8080
+Frontend: http://localhost:8080
 
 Stop service:
 
@@ -127,12 +148,6 @@ curl -X POST "http://localhost:8000/detect" \
   -F "file=@path/to/image.jpg"
 ```
 
-Cleanup stored results:
-
-```bash
-curl -X DELETE "http://localhost:8000/cleanup?max_age_hours=24"
-```
-
 ---
 
 ## Environment Variables
@@ -142,6 +157,8 @@ Backend uses `.env` (see `backend/.env.example`). Key settings include:
 - `MODEL_CHECKPOINT_PATH`
 - `RESULTS_DIR`
 - `CORS_ORIGINS`
+
+Result files are cleaned automatically every day at midnight server time.
 
 Frontend build-time variable:
 

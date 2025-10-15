@@ -12,7 +12,7 @@ from PIL import Image
 
 from app.api.deps import get_detection_service
 from app.core.logging_config import get_logger
-from app.schemas import DetectionResponse, CleanupResponse
+from app.schemas import DetectionResponse
 from app.services import DetectionService, FileService
 
 logger = get_logger(__name__)
@@ -80,46 +80,6 @@ async def detect_deepfake(
         raise HTTPException(
             status_code=500,
             detail=f"Detection processing failed: {str(e)}"
-        )
-
-
-@router.delete(
-    "/cleanup",
-    response_model=CleanupResponse,
-    summary="Cleanup old results",
-    description="Remove old Grad-CAM result files to free up disk space"
-)
-async def cleanup_old_results(
-    max_age_hours: int = 24
-) -> CleanupResponse:
-    """
-    Clean up old result files.
-    
-    Removes Grad-CAM visualization files that are older than the specified
-    maximum age. This helps manage disk space usage.
-    
-    Args:
-        max_age_hours: Maximum age of files to keep (default: 24 hours)
-        
-    Returns:
-        Cleanup response with number of files deleted
-        
-    Raises:
-        HTTPException: If cleanup operation fails
-    """
-    try:
-        deleted_count = FileService.cleanup_old_files(max_age_hours)
-        
-        return CleanupResponse(
-            success=True,
-            deleted_files=deleted_count,
-            message=f"Deleted {deleted_count} files older than {max_age_hours} hours"
-        )
-    except Exception as e:
-        logger.error(f"Cleanup failed: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=500,
-            detail=f"Cleanup operation failed: {str(e)}"
         )
 
 

@@ -5,7 +5,8 @@ Handles file operations including cleanup of old result files
 and file validation.
 """
 
-from datetime import datetime, timedelta
+import asyncio
+from datetime import datetime, timedelta, time
 from pathlib import Path
 from typing import List
 
@@ -184,3 +185,27 @@ class FileService:
             "total_size_bytes": total_size,
             "total_size_mb": round(total_size / (1024 * 1024), 2)
         }
+
+    @staticmethod
+    async def run_daily_cleanup_scheduler(stop_event: asyncio.Event) -> None:
+        while not stop_event.is_set():
+            now = datetime.now()
+            midnight = datetime.combine(now.date(), time.min)
+            if now >= midnight:
+                midnight += timedelta(days=1)
+            wait_seconds = max((midnight - now).total_seconds(), 0)
+            try:
+                await asyncio.wait_for(stop_event.wait(), timeout=wait_seconds)
+                break
+            except asyncio.TimeoutError:
+                pass
+            try:
+                deleted = await asyncio.to_thread(FileService.cleanup_old_files)
+                logger.info(
+                    "Scheduled cleanup executed, deleted %s files", deleted
+                )
+            except Exception as exc:
+                logger.error(
+                    "Scheduled cleanup failed: %s", exc,
+                    exc_info=True
+                )

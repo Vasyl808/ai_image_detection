@@ -60,14 +60,6 @@ class DetectionResponse(BaseModel):
         }
 
 
-class CleanupResponse(BaseModel):
-    """Response for cleanup operation."""
-    
-    success: bool = Field(..., description="Whether cleanup was successful")
-    deleted_files: int = Field(..., ge=0, description="Number of files deleted")
-    message: str = Field(..., description="Human-readable status message")
-
-
 class HealthResponse(BaseModel):
     """Health check response."""
     
