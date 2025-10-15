@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   backend:
     image: deepfake-backend:latest
@@ -20,3 +18,9 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: ai_image_detection_net

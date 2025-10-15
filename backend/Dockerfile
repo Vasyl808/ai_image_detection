@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsm6 \
     libxext6 \
     libxrender1 \
+    libgl1 \ 
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -42,6 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsm6 \
     libxext6 \
     libxrender1 \
+    libgl1 \ 
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -51,6 +53,7 @@ COPY --from=builder /opt/venv /opt/venv
 COPY app/ ./app
 COPY run.py ./run.py
 COPY .env.example ./env.example
+COPY best_efficientnet_model.pth ./best_efficientnet_model.pth
 
 RUN mkdir -p /app/results && \
     useradd -m -u 1000 appuser && \

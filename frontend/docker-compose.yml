@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   frontend:
     image: deepfake-frontend:latest
@@ -8,10 +6,14 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_VERSION=20-alpine
-        - VITE_API_URL=/api
+        - VITE_API_URL=${VITE_API_URL:-/api}
+    environment:
+      - NGINX_BACKEND_URL=${NGINX_BACKEND_URL:-http://localhost:8000/}
     ports:
       - "8080:8080"
     restart: unless-stopped
+    tmpfs:
+      - /tmp
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/"]
       interval: 30s
