@@ -6,3 +6,4 @@
 
 export * from "./useImageUpload";
 export * from "./useDetection";
+export * from "./useReportDownload";

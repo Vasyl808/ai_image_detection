@@ -83,8 +83,10 @@ class FileService:
             current_time = datetime.now()
             deleted_count = 0
             
-            # Find all Grad-CAM result files
-            result_files = list(settings.RESULTS_DIR.glob("gradcam_*.png"))
+            # Find all result files (both gradcam and original temp files)
+            result_files = []
+            result_files.extend(settings.RESULTS_DIR.glob("gradcam_*.png"))
+            result_files.extend(settings.RESULTS_DIR.glob("original_*.png"))
             
             logger.info(f"Found {len(result_files)} result files")
             
@@ -130,10 +132,12 @@ class FileService:
         
         try:
             # Get all result files sorted by modification time
-            result_files = sorted(
-                settings.RESULTS_DIR.glob("gradcam_*.png"),
-                key=lambda p: p.stat().st_mtime
-            )
+            result_files = []
+            result_files.extend(settings.RESULTS_DIR.glob("gradcam_*.png"))
+            result_files.extend(settings.RESULTS_DIR.glob("original_*.png"))
+            
+            # Sort by modification time (oldest first)
+            result_files.sort(key=lambda p: p.stat().st_mtime)
             
             files_to_delete = len(result_files) - max_files
             
@@ -167,7 +171,10 @@ class FileService:
         Returns:
             List of Path objects for all result files
         """
-        return list(settings.RESULTS_DIR.glob("gradcam_*.png"))
+        files = []
+        files.extend(settings.RESULTS_DIR.glob("gradcam_*.png"))
+        files.extend(settings.RESULTS_DIR.glob("original_*.png"))
+        return files
     
     @staticmethod
     def get_storage_stats() -> dict:

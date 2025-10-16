@@ -6,7 +6,6 @@
 
 export type {
   PredictionResult,
-  Probabilities,
   GradCAMExplanation,
   DetectionResponse,
   HealthCheckResponse,

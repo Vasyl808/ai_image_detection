@@ -20,6 +20,9 @@ numpy>=1.24.0
 # Utilities
 python-dotenv>=1.0.0
 
+# PDF generation
+reportlab>=4.0.0
+
 # Type checking (optional, for development)
 mypy>=1.7.0
 types-Pillow>=10.1.0

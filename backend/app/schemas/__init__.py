@@ -5,7 +5,6 @@ Pydantic schemas for API request/response models.
 from app.schemas.detection import (
     DetectionResponse,
     PredictionResult,
-    Probabilities,
     GradCAMExplanation,
     HealthResponse,
     ErrorResponse,
@@ -14,7 +13,6 @@ from app.schemas.detection import (
 __all__ = [
     "DetectionResponse",
     "PredictionResult",
-    "Probabilities",
     "GradCAMExplanation",
     "HealthResponse",
     "ErrorResponse",

@@ -17,7 +17,7 @@ from PIL import Image
 from app.core.config import settings
 from app.core.logging_config import get_logger
 from app.models import DeepfakeDetector, GradCAM, apply_colormap_on_image
-from app.schemas import DetectionResponse, PredictionResult, Probabilities, GradCAMExplanation
+from app.schemas import DetectionResponse, PredictionResult, GradCAMExplanation
 from app.utils.image_processing import preprocess_image
 
 logger = get_logger(__name__)
@@ -75,29 +75,19 @@ class DetectionService:
             img_tensor = preprocess_image(image).to(self.device)
             
             # Model inference
-            prediction_prob, is_deepfake, predicted_class = self._run_inference(img_tensor)
-            
-            # Calculate confidence and probabilities
-            confidence, probabilities = self._calculate_probabilities(
-                prediction_prob, is_deepfake
-            )
+            is_deepfake, predicted_class = self._run_inference(img_tensor)
             
             # Generate Grad-CAM visualization
             gradcam_url = self._generate_gradcam(image, img_tensor, predicted_class)
             
             # Create response
-            label = "Deepfake" if is_deepfake else "Real"
+            label = "AI-generated image" if is_deepfake else "Real"
             
             response = DetectionResponse(
                 success=True,
                 prediction=PredictionResult(
                     label=label,
-                    is_deepfake=is_deepfake,
-                    confidence=round(confidence, 2),
-                    probabilities=Probabilities(
-                        real=probabilities["real"],
-                        fake=probabilities["fake"]
-                    )
+                    is_deepfake=is_deepfake
                 ),
                 explanation=GradCAMExplanation(
                     gradcam_image=gradcam_url,
@@ -110,7 +100,7 @@ class DetectionService:
             )
             
             logger.info(
-                f"Detection completed: {label} with {confidence:.2f}% confidence"
+                f"Detection completed: {label}"
             )
             
             return response
@@ -119,7 +109,7 @@ class DetectionService:
             logger.error(f"Detection failed: {e}", exc_info=True)
             raise RuntimeError(f"Detection failed: {str(e)}")
     
-    def _run_inference(self, img_tensor: torch.Tensor) -> Tuple[float, bool, int]:
+    def _run_inference(self, img_tensor: torch.Tensor) -> Tuple[bool, int]:
         """
         Run model inference on preprocessed image.
         
@@ -127,7 +117,7 @@ class DetectionService:
             img_tensor: Preprocessed image tensor
             
         Returns:
-            Tuple of (prediction_probability, is_deepfake, predicted_class)
+            Tuple of (is_deepfake, predicted_class)
         """
         with torch.no_grad():
             output = self.model(img_tensor)
@@ -136,34 +126,7 @@ class DetectionService:
         is_deepfake = prediction_prob > 0.5
         predicted_class = 1 if is_deepfake else 0
         
-        return prediction_prob, is_deepfake, predicted_class
-    
-    def _calculate_probabilities(
-        self,
-        prediction_prob: float,
-        is_deepfake: bool
-    ) -> Tuple[float, dict]:
-        """
-        Calculate confidence score and class probabilities.
-        
-        Args:
-            prediction_prob: Raw probability from sigmoid (0-1)
-            is_deepfake: Whether predicted as deepfake
-            
-        Returns:
-            Tuple of (confidence_percentage, probabilities_dict)
-        """
-        real_prob = (1 - prediction_prob) * 100
-        fake_prob = prediction_prob * 100
-        
-        confidence = fake_prob if is_deepfake else real_prob
-        
-        probabilities = {
-            "real": round(real_prob, 2),
-            "fake": round(fake_prob, 2)
-        }
-        
-        return confidence, probabilities
+        return is_deepfake, predicted_class
     
     def _generate_gradcam(
         self,

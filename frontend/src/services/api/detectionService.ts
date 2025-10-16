@@ -24,7 +24,7 @@ export async function analyzeImage(imageFile: File): Promise<DetectionResponse> 
     const formData = new FormData();
     formData.append("file", imageFile);
 
-    const response = await apiClient.post<DetectionResponse>("/detect", formData, {
+    const response = await apiClient.post<DetectionResponse>("/detect/detect", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -80,7 +80,7 @@ export async function getStorageStats(): Promise<{
   };
 }> {
   try {
-    const response = await apiClient.get("/stats");
+    const response = await apiClient.get("/detect/stats");
     return response.data;
   } catch (error) {
     throw new Error("Failed to get storage statistics");

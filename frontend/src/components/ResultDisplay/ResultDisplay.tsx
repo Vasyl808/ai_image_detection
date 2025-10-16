@@ -8,12 +8,13 @@ import React from "react";
 import {
   CheckCircle,
   XCircle,
-  AlertTriangle,
-  RefreshCw,
   TrendingUp,
+  RefreshCw,
+  Download,
 } from "lucide-react";
 import clsx from "clsx";
-import { API_BASE_URL, GRADCAM_MESSAGES } from "../../constants";
+import { API_BASE_URL, GRADCAM_MESSAGES, REPORT_MESSAGES } from "../../constants";
+import { useReportDownload } from "../../hooks";
 import type { DetectionResponse } from "../../types";
 
 export interface ResultDisplayProps {
@@ -27,8 +28,18 @@ export interface ResultDisplayProps {
  * Component to display detection results with visual explanations
  */
 export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset }) => {
-  const { prediction, explanation } = result;
+  const { prediction, explanation, session_id } = result;
   const isDeepfake = prediction.is_deepfake;
+  const { isDownloading, downloadError, downloadReport: handleDownloadReport } = useReportDownload();
+
+  /**
+   * Handle PDF report download
+   */
+  const onDownloadReport = () => {
+    if (session_id) {
+      handleDownloadReport(session_id);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -64,59 +75,7 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset })
           </div>
         </div>
 
-        {/* Confidence Score */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Confidence
-            </span>
-            <span className="text-lg font-bold text-gray-900 dark:text-white">
-              {prediction.confidence}%
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-            <div
-              className={clsx("h-3 rounded-full transition-all duration-500", {
-                "bg-red-600": isDeepfake,
-                "bg-green-600": !isDeepfake,
-              })}
-              style={{ width: `${prediction.confidence}%` }}
-              role="progressbar"
-              aria-valuenow={prediction.confidence}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            />
-          </div>
-        </div>
-
-        {/* Probability Breakdown */}
-        <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Real
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
-              {prediction.probabilities.real}%
-            </p>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="w-4 h-4 text-red-600" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Fake
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
-              {prediction.probabilities.fake}%
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Grad-CAM Visualization */}
+        {/* Grad-CAM Visualization */}
       <div className="card">
         <div className="flex items-center gap-2 mb-4">
           <TrendingUp className="w-5 h-5 text-primary-600 dark:text-primary-400" />
@@ -179,15 +138,47 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset })
         </ul>
       </div>
 
-      {/* Reset Button */}
-      <button
-        onClick={onReset}
-        className="btn-primary w-full flex items-center justify-center gap-2"
-        type="button"
-      >
-        <RefreshCw className="w-5 h-5" />
-        Analyze Another Image
-      </button>
+      {/* Download Error */}
+      {downloadError && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <p className="text-sm text-red-800 dark:text-red-200">{downloadError}</p>
+        </div>
+      )}
+
+      {/* Action Buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Download PDF Report Button */}
+        <button
+          onClick={onDownloadReport}
+          disabled={isDownloading || !session_id}
+          className="btn-primary flex items-center justify-center gap-2"
+          type="button"
+          title={!session_id ? "Session expired" : "Download comprehensive PDF report"}
+        >
+          {isDownloading ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              {REPORT_MESSAGES.GENERATING}
+            </>
+          ) : (
+            <>
+              <Download className="w-5 h-5" />
+              {REPORT_MESSAGES.DOWNLOAD_BUTTON}
+            </>
+          )}
+        </button>
+
+        {/* Reset Button */}
+        <button
+          onClick={onReset}
+          className="btn-secondary flex items-center justify-center gap-2"
+          type="button"
+        >
+          <RefreshCw className="w-5 h-5" />
+          Analyze Another Image
+        </button>
+      </div>
     </div>
+  </div>
   );
 };

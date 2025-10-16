@@ -5,13 +5,18 @@ Provides endpoints for analyzing images and detecting deepfakes.
 """
 
 import io
+import uuid
+from datetime import datetime
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from PIL import Image
 
 from app.api.deps import get_detection_service
+from app.core.config import settings
 from app.core.logging_config import get_logger
+from app.core.session_cache import detection_cache, add_session
 from app.schemas import DetectionResponse
 from app.services import DetectionService, FileService
 
@@ -38,7 +43,7 @@ async def detect_deepfake(
     2. Loads and preprocesses the image
     3. Runs deepfake detection
     4. Generates Grad-CAM visualization
-    5. Returns prediction with confidence and explanation
+    5. Returns prediction and explanation
     
     Args:
         file: Uploaded image file (JPEG, PNG, WebP)
@@ -74,7 +79,30 @@ async def detect_deepfake(
     # Run detection
     try:
         result = detection_service.detect(image)
-        return result
+        
+        # Generate session ID and store data for potential PDF generation
+        session_id = str(uuid.uuid4())
+        
+        # Save original image temporarily for PDF generation
+        temp_original_path = settings.RESULTS_DIR / f"original_{session_id}.png"
+        image.save(temp_original_path)
+        
+        # Extract gradcam path from result
+        gradcam_filename = result.explanation.gradcam_image.split("/")[-1]
+        gradcam_path = settings.RESULTS_DIR / gradcam_filename
+        
+        # Add to cache for PDF generation
+        add_session(session_id, temp_original_path, gradcam_path, result)
+        
+        # Add session_id to response for PDF generation
+        response = DetectionResponse(
+            success=result.success,
+            prediction=result.prediction,
+            explanation=result.explanation,
+            session_id=session_id
+        )
+        
+        return response
     except Exception as e:
         logger.error(f"Detection failed: {e}", exc_info=True)
         raise HTTPException(

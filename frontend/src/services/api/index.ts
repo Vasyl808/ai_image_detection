@@ -6,3 +6,4 @@
 
 export { default as apiClient } from "./apiClient";
 export * from "./detectionService";
+export * from "./reportService";

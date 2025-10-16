@@ -40,10 +40,6 @@ export const LandingPage: FC = () => {
             {/* Heading */}
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 dark:text-white">
               Detect Deepfakes
-              <br />
-              <span className="bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                with Confidence
-              </span>
             </h1>
 
             {/* Description */}
@@ -220,7 +216,7 @@ export const LandingPage: FC = () => {
                 Get Results
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                View confidence scores and visual explanations of the detection
+                View results and visual explanations of the detection
               </p>
             </div>
           </div>

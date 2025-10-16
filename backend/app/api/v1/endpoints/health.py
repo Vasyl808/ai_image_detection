@@ -16,28 +16,6 @@ router = APIRouter()
 
 @router.get(
     "/",
-    response_model=dict,
-    summary="Root endpoint",
-    description="Welcome endpoint with basic API information"
-)
-async def root() -> dict:
-    """
-    Root endpoint.
-    
-    Returns basic information about the API.
-    
-    Returns:
-        Dictionary with API message and status
-    """
-    return {
-        "message": "Deepfake Detection API",
-        "status": "running",
-        "version": __version__
-    }
-
-
-@router.get(
-    "/health",
     response_model=HealthResponse,
     summary="Health check",
     description="Check if the service and model are healthy and ready"
@@ -45,14 +23,14 @@ async def root() -> dict:
 async def health_check(model: DeepfakeDetector = Depends(get_model)) -> HealthResponse:
     """
     Health check endpoint.
-    
+
     Verifies that:
     - The service is running
     - The model is loaded and accessible
-    
+
     Args:
         model: Injected model dependency
-        
+
     Returns:
         Health status response
     """

@@ -178,7 +178,7 @@ export const DetectionPage: FC = () => {
             <li className="flex items-start gap-2">
               <span className="font-bold">3.</span>
               <span>
-                Review the results, confidence score, and Grad-CAM visualization below
+                Review the results and Grad-CAM visualization below
               </span>
             </li>
           </ol>

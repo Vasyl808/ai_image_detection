@@ -33,3 +33,10 @@ export const GRADCAM_MESSAGES = {
   GENERAL_INFO: "Look for unusual patterns or artifacts that might indicate manipulation",
   INTERPRETATION_TITLE: "How to interpret the heatmap:",
 } as const;
+
+export const REPORT_MESSAGES = {
+  DOWNLOAD_BUTTON: "Download PDF Report",
+  GENERATING: "Generating report...",
+  ERROR: "Failed to generate PDF report. Please try again.",
+  SUCCESS: "Report downloaded successfully",
+} as const;

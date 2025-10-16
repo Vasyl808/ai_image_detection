@@ -13,15 +13,6 @@ class PredictionResult(BaseModel):
     
     label: str = Field(..., description="Predicted label: 'Real' or 'Deepfake'")
     is_deepfake: bool = Field(..., description="Whether the image is predicted as deepfake")
-    confidence: float = Field(..., ge=0.0, le=100.0, description="Confidence score (0-100)")
-    probabilities: "Probabilities" = Field(..., description="Class probabilities")
-
-
-class Probabilities(BaseModel):
-    """Class probabilities."""
-    
-    real: float = Field(..., ge=0.0, le=100.0, description="Probability of being real (0-100)")
-    fake: float = Field(..., ge=0.0, le=100.0, description="Probability of being fake (0-100)")
 
 
 class GradCAMExplanation(BaseModel):
@@ -37,6 +28,7 @@ class DetectionResponse(BaseModel):
     success: bool = Field(..., description="Whether the detection was successful")
     prediction: PredictionResult = Field(..., description="Prediction results")
     explanation: GradCAMExplanation = Field(..., description="Visual explanation via Grad-CAM")
+    session_id: Optional[str] = Field(None, description="Session ID for PDF report generation")
     
     class Config:
         """Pydantic config."""
@@ -45,12 +37,7 @@ class DetectionResponse(BaseModel):
                 "success": True,
                 "prediction": {
                     "label": "Real",
-                    "is_deepfake": False,
-                    "confidence": 87.45,
-                    "probabilities": {
-                        "real": 87.45,
-                        "fake": 12.55
-                    }
+                    "is_deepfake": False
                 },
                 "explanation": {
                     "gradcam_image": "/results/gradcam_20231015_120000_abc123.png",
@@ -62,6 +49,8 @@ class DetectionResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response."""
+    
+    model_config = {"protected_namespaces": ()}
     
     status: str = Field(..., description="Service status")
     model_loaded: bool = Field(..., description="Whether the model is loaded")

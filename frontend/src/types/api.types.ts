@@ -8,18 +8,8 @@
  * Prediction result from the model
  */
 export interface PredictionResult {
-  label: "Real" | "Deepfake";
+  label: "Real" | "AI-generated image";
   is_deepfake: boolean;
-  confidence: number;
-  probabilities: Probabilities;
-}
-
-/**
- * Class probabilities
- */
-export interface Probabilities {
-  real: number;
-  fake: number;
 }
 
 /**
@@ -37,6 +27,7 @@ export interface DetectionResponse {
   success: boolean;
   prediction: PredictionResult;
   explanation: GradCAMExplanation;
+  session_id?: string;
 }
 
 /**
