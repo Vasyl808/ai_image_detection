@@ -7,7 +7,7 @@ AI-powered system for detecting deepfake images with Grad-CAM visual explanation
 - FastAPI backend with EfficientNet-B0 model and Grad-CAM support
 - React + TypeScript frontend with modern landing & detection pages
 - REST API (`/health`, `/detect`, `/reports`) with proper resource-based routing
-- **PDF Report Generation** - Download comprehensive reports with analyzed image, detection results, Grad-CAM visualization, and interpretation guide
+- PDF Report Generation - Download comprehensive reports with analyzed image, detection results, Grad-CAM visualization, and interpretation guide
 - Results stored as files and served via `/results/<filename>`
 - Dockerized backend & frontend, each with dedicated `docker-compose.yml`
 
