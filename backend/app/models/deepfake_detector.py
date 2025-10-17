@@ -55,11 +55,12 @@ class DeepfakeDetector(nn.Module):
         # Replace classification head
         in_features = self.efficientnet.classifier[1].in_features
         self.efficientnet.classifier = nn.Sequential(
-            nn.Dropout(p=0.5, inplace=True),
-            nn.Linear(in_features, 512),
+            nn.Dropout(p=0.3, inplace=True), 
+            nn.Linear(in_features, 256),     
+            nn.BatchNorm1d(256),
             nn.ReLU(inplace=True),
-            nn.Dropout(p=0.5),
-            nn.Linear(512, num_classes)
+            nn.Dropout(p=0.4),
+            nn.Linear(256, num_classes)
         )
         
         # Storage for Grad-CAM

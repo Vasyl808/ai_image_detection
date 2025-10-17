@@ -25,8 +25,10 @@ class FileService:
     Handles validation, cleanup, and other file-related tasks.
     """
     
-    @staticmethod
-    def validate_image_file(file: UploadFile) -> None:
+    def __init__(self):
+        pass
+    
+    def validate_image_file(self, file: UploadFile) -> None:
         """
         Validate uploaded image file.
         
@@ -58,8 +60,7 @@ class FileService:
         
         logger.debug(f"File validated: {file.filename}, type: {file.content_type}")
     
-    @staticmethod
-    def cleanup_old_files(max_age_hours: int = None) -> int:
+    def cleanup_old_files(self, max_age_hours: int = None) -> int:
         """
         Clean up old result files.
         
@@ -112,8 +113,7 @@ class FileService:
             logger.error(f"Cleanup failed: {e}", exc_info=True)
             raise RuntimeError(f"Cleanup operation failed: {str(e)}")
     
-    @staticmethod
-    def cleanup_by_count(max_files: int = None) -> int:
+    def cleanup_by_count(self, max_files: int = None) -> int:
         """
         Clean up files to maintain a maximum count.
         
@@ -163,8 +163,7 @@ class FileService:
             logger.error(f"Cleanup by count failed: {e}", exc_info=True)
             raise RuntimeError(f"Cleanup by count failed: {str(e)}")
     
-    @staticmethod
-    def get_result_files() -> List[Path]:
+    def get_result_files(self) -> List[Path]:
         """
         Get list of all result files.
         
@@ -176,15 +175,14 @@ class FileService:
         files.extend(settings.RESULTS_DIR.glob("original_*.png"))
         return files
     
-    @staticmethod
-    def get_storage_stats() -> dict:
+    def get_storage_stats(self) -> dict:
         """
         Get statistics about stored result files.
         
         Returns:
             Dictionary with file count and total size
         """
-        files = FileService.get_result_files()
+        files = self.get_result_files()
         total_size = sum(f.stat().st_size for f in files)
         
         return {
@@ -193,8 +191,7 @@ class FileService:
             "total_size_mb": round(total_size / (1024 * 1024), 2)
         }
 
-    @staticmethod
-    async def run_daily_cleanup_scheduler(stop_event: asyncio.Event) -> None:
+    async def run_daily_cleanup_scheduler(self, stop_event: asyncio.Event) -> None:
         while not stop_event.is_set():
             now = datetime.now()
             midnight = datetime.combine(now.date(), time.min)
@@ -207,7 +204,7 @@ class FileService:
             except asyncio.TimeoutError:
                 pass
             try:
-                deleted = await asyncio.to_thread(FileService.cleanup_old_files)
+                deleted = await asyncio.to_thread(self.cleanup_old_files)
                 logger.info(
                     "Scheduled cleanup executed, deleted %s files", deleted
                 )

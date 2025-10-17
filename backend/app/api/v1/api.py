@@ -10,7 +10,6 @@ from app.api.v1.endpoints import health, detection, reports
 
 api_router = APIRouter()
 
-# Include endpoint routers with proper REST prefixes
 api_router.include_router(
     health.router,
     prefix="/health",

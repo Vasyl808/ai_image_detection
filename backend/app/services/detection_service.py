@@ -79,8 +79,6 @@ class DetectionService:
             
             # Generate Grad-CAM visualization
             gradcam_url = self._generate_gradcam(image, img_tensor, predicted_class)
-            
-            # Create response
             label = "AI-generated image" if is_deepfake else "Real"
             
             response = DetectionResponse(

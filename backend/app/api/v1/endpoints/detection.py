@@ -13,7 +13,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from PIL import Image
 
-from app.api.deps import get_detection_service
+from app.api.deps import get_detection_service, get_file_service
 from app.core.config import settings
 from app.core.logging_config import get_logger
 from app.core.session_cache import detection_cache, add_session
@@ -33,7 +33,8 @@ router = APIRouter()
 )
 async def detect_deepfake(
     file: Annotated[UploadFile, File(description="Image file to analyze")],
-    detection_service: DetectionService = Depends(get_detection_service)
+    file_service: FileService = Depends(get_file_service),
+    detection_service: DetectionService = Depends(get_detection_service),
 ) -> DetectionResponse:
     """
     Detect if an uploaded image is a deepfake.
@@ -48,6 +49,7 @@ async def detect_deepfake(
     Args:
         file: Uploaded image file (JPEG, PNG, WebP)
         detection_service: Injected detection service
+        file_service: Injected file service
         
     Returns:
         Detection response with prediction and Grad-CAM visualization
@@ -57,7 +59,7 @@ async def detect_deepfake(
     """
     # Validate file
     try:
-        FileService.validate_image_file(file)
+        file_service.validate_image_file(file)
     except HTTPException:
         raise
     except Exception as e:
@@ -117,7 +119,9 @@ async def detect_deepfake(
     summary="Get storage statistics",
     description="Get statistics about stored result files"
 )
-async def get_storage_stats() -> dict:
+async def get_storage_stats(
+    file_service: FileService = Depends(get_file_service)
+) -> dict:
     """
     Get statistics about stored result files.
     
@@ -128,7 +132,7 @@ async def get_storage_stats() -> dict:
         Dictionary with file count and storage size
     """
     try:
-        stats = FileService.get_storage_stats()
+        stats = file_service.get_storage_stats()
         return {
             "success": True,
             "stats": stats

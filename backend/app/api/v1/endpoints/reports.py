@@ -7,16 +7,15 @@ Provides endpoints for generating PDF reports of detection results.
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
-from app.api.deps import get_detection_service
+from app.api.deps import get_pdf_report_service
 from app.core.config import settings
 from app.core.logging_config import get_logger
 from app.schemas import DetectionResponse
-from app.services import DetectionService, FileService, pdf_report_service
-
 from app.core.session_cache import get_cache_stats, get_session
+from app.services import PDFReportService
 
 logger = get_logger(__name__)
 
@@ -29,7 +28,10 @@ router = APIRouter()
     description="Generate a comprehensive PDF report for a detection session",
     response_class=StreamingResponse,
 )
-async def generate_pdf_report(session_id: str) -> StreamingResponse:
+async def generate_pdf_report(
+    session_id: str,
+    pdf_report_service: PDFReportService = Depends(get_pdf_report_service)
+) -> StreamingResponse:
     """
     Generate a PDF report for a detection session.
 
@@ -41,6 +43,7 @@ async def generate_pdf_report(session_id: str) -> StreamingResponse:
 
     Args:
         session_id: The session ID from the detection response
+        pdf_report_service: Injected PDF report service
 
     Returns:
         PDF file as streaming response
@@ -143,3 +146,4 @@ async def get_cache_statistics() -> dict:
             status_code=500,
             detail=f"Failed to retrieve cache statistics: {str(e)}"
         )
+        

@@ -4,38 +4,37 @@ Health check endpoints.
 Provides endpoints for monitoring service health and status.
 """
 
-from fastapi import APIRouter, Depends
-
+from fastapi import APIRouter, Request
 from app import __version__
-from app.api.deps import get_model
-from app.models import DeepfakeDetector
-from app.schemas import HealthResponse
+from app.core.config import settings
 
 router = APIRouter()
 
 
 @router.get(
     "/",
-    response_model=HealthResponse,
     summary="Health check",
     description="Check if the service and model are healthy and ready"
 )
-async def health_check(model: DeepfakeDetector = Depends(get_model)) -> HealthResponse:
+async def health_check(request: Request):
     """
     Health check endpoint.
 
-    Verifies that:
-    - The service is running
-    - The model is loaded and accessible
-
-    Args:
-        model: Injected model dependency
-
-    Returns:
-        Health status response
+    Returns service status and version information.
+    Useful for load balancers and monitoring systems.
     """
-    return HealthResponse(
-        status="healthy",
-        model_loaded=model is not None,
-        version=__version__
-    )
+    health_status = {
+        "status": "healthy",
+        "version": __version__,
+        "api_title": settings.API_TITLE
+    }
+    
+    # Add service info if initialized
+    if hasattr(request.app.state, 'services'):
+        services = request.app.state.services
+        health_status.update({
+            "services": services.get_info(),
+            "device": str(services.device) if services.device else None
+        })
+    
+    return health_status

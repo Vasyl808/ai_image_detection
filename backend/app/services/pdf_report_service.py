@@ -408,7 +408,3 @@ class PDFReportService:
             "<i>This AI analysis provides insights but should be considered alongside other verification methods.</i>",
             styles['Centered']
         ))
-
-
-# Singleton instance
-pdf_report_service = PDFReportService()

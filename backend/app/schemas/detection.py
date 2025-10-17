@@ -47,16 +47,6 @@ class DetectionResponse(BaseModel):
         }
 
 
-class HealthResponse(BaseModel):
-    """Health check response."""
-    
-    model_config = {"protected_namespaces": ()}
-    
-    status: str = Field(..., description="Service status")
-    model_loaded: bool = Field(..., description="Whether the model is loaded")
-    version: str = Field(..., description="API version")
-
-
 class ErrorResponse(BaseModel):
     """Error response model."""
     
