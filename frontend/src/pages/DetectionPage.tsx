@@ -9,6 +9,7 @@ import { AlertCircle } from "lucide-react";
 import { ImageUpload, ResultDisplay, ErrorMessage, LoadingSpinner } from "../components";
 import { useImageUpload, useDetection } from "../hooks";
 import { INFO_MESSAGES } from "../constants";
+import styles from "./DetectionPage.module.css";
 
 /**
  * Detection page component with vertical layout
@@ -58,19 +59,19 @@ export const DetectionPage: FC = () => {
   const errorMessage = uploadError || detectionError;
 
   return (
-    <div className="py-8 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-200px)]">
-      <div className="max-w-4xl mx-auto">
+    <div className={styles.container}>
+      <div className={styles.maxWidthContainer}>
         {/* Page Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-gradient-to-br from-primary-500 to-primary-700 p-3 rounded-xl shadow-lg">
-              <AlertCircle className="w-8 h-8 text-white" aria-hidden="true" />
+        <div className={styles.header}>
+          <div className={styles.iconContainer}>
+            <div className={styles.iconWrapper}>
+              <AlertCircle className={styles.icon} aria-hidden="true" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+          <h1 className={styles.title}>
             Deepfake Detection
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className={styles.description}>
             Upload an image to analyze it for AI-generated or manipulated content. Get
             instant results with visual explanations.
           </p>
@@ -84,14 +85,14 @@ export const DetectionPage: FC = () => {
               clearSelection();
               resetDetection();
             }}
-            className="mb-8"
+            className={styles.errorContainer}
           />
         )}
 
         {/* Vertical Layout: Upload -> Results */}
-        <div className="space-y-8">
+        <div className={styles.verticalLayout}>
           {/* Upload Section */}
-          <div className="space-y-6">
+          <div className={styles.uploadSection}>
             <ImageUpload
               onImageSelect={handleFileSelect}
               imagePreview={preview}
@@ -100,21 +101,21 @@ export const DetectionPage: FC = () => {
 
             {/* Action Buttons */}
             {selectedFile && !result && (
-              <div className="flex gap-4">
+              <div className={styles.actionButtons}>
                 <button
                   onClick={handleAnalyze}
                   disabled={isLoading || !isValid}
-                  className="btn-primary flex-1 flex items-center justify-center gap-2"
+                  className={styles.analyzeButton}
                   type="button"
                 >
                   {isLoading ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className={styles.spinner} />
                       {INFO_MESSAGES.ANALYZING}
                     </>
                   ) : (
                     <>
-                      <AlertCircle className="w-5 h-5" />
+                      <AlertCircle className={styles.buttonIcon} />
                       Analyze Image
                     </>
                   )}
@@ -122,7 +123,7 @@ export const DetectionPage: FC = () => {
                 <button
                   onClick={handleReset}
                   disabled={isLoading}
-                  className="btn-secondary"
+                  className={styles.resetButton}
                   type="button"
                 >
                   Reset
@@ -133,27 +134,27 @@ export const DetectionPage: FC = () => {
 
           {/* Results Section - Below Upload */}
           {isLoading && (
-            <div className="card flex items-center justify-center p-12">
+            <div className={styles.loadingCard}>
               <LoadingSpinner message={INFO_MESSAGES.ANALYZING} size="lg" />
             </div>
           )}
 
           {result && (
-            <div className="space-y-6">
+            <div className={styles.resultsSection}>
               <ResultDisplay result={result} onReset={handleReset} />
             </div>
           )}
 
           {!isLoading && !result && !selectedFile && (
-            <div className="card flex items-center justify-center text-center p-12 border-2 border-dashed">
+            <div className={styles.emptyCard}>
               <div>
-                <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <AlertCircle className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+                <div className={styles.emptyIconWrapper}>
+                  <AlertCircle className={styles.emptyIcon} />
                 </div>
-                <p className="text-gray-500 dark:text-gray-400 font-medium">
+                <p className={styles.emptyMessage}>
                   {INFO_MESSAGES.WAITING_FOR_IMAGE}
                 </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
+                <p className={styles.emptySubMessage}>
                   Upload an image above to get started
                 </p>
               </div>
@@ -162,21 +163,21 @@ export const DetectionPage: FC = () => {
         </div>
 
         {/* Info Panel */}
-        <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-          <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">
+        <div className={styles.infoPanel}>
+          <h3 className={styles.infoPanelTitle}>
             How to use:
           </h3>
-          <ol className="space-y-2 text-sm text-blue-800 dark:text-blue-300">
-            <li className="flex items-start gap-2">
-              <span className="font-bold">1.</span>
+          <ol className={styles.infoPanelList}>
+            <li className={styles.infoPanelItem}>
+              <span className={styles.infoPanelNumber}>1.</span>
               <span>Upload an image by dragging and dropping or clicking the upload area</span>
             </li>
-            <li className="flex items-start gap-2">
-              <span className="font-bold">2.</span>
+            <li className={styles.infoPanelItem}>
+              <span className={styles.infoPanelNumber}>2.</span>
               <span>Click "Analyze Image" to start the detection process</span>
             </li>
-            <li className="flex items-start gap-2">
-              <span className="font-bold">3.</span>
+            <li className={styles.infoPanelItem}>
+              <span className={styles.infoPanelNumber}>3.</span>
               <span>
                 Review the results and Grad-CAM visualization below
               </span>

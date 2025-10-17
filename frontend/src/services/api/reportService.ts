@@ -8,23 +8,6 @@ import { AxiosError } from "axios";
 import apiClient from "./apiClient";
 
 /**
- * Response type for cache statistics
- */
-export interface CacheStats {
-  total_sessions: number;
-  active_sessions: number;
-  old_sessions: number;
-  max_age_minutes: number;
-  max_size: number;
-  cleanup_interval_minutes: number;
-}
-
-export interface CacheStatsResponse {
-  success: boolean;
-  cache_stats: CacheStats;
-}
-
-/**
  * Download PDF report for a detection session
  * 
  * @param sessionId - Session ID from detection response
@@ -73,21 +56,6 @@ export async function downloadReport(sessionId: string): Promise<{
     }
 
     throw new Error("Failed to download report");
-  }
-}
-
-/**
- * Get cache statistics
- * 
- * @returns Cache statistics including session counts and configuration
- * @throws {Error} If the request fails
- */
-export async function getCacheStats(): Promise<CacheStatsResponse> {
-  try {
-    const response = await apiClient.get<CacheStatsResponse>("/reports/cache/stats");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to get cache statistics");
   }
 }
 

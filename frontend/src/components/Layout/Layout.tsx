@@ -7,6 +7,7 @@
 import { FC, ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import styles from "./Layout.module.css";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -17,9 +18,9 @@ export interface LayoutProps {
  */
 export const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <div className={styles.container}>
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className={styles.main}>{children}</main>
       <Footer />
     </div>
   );

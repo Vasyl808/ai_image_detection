@@ -1,0 +1,121 @@
+/* Detection Page Styles */
+
+.container {
+  @apply py-8 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-200px)];
+}
+
+.maxWidthContainer {
+  @apply max-w-4xl mx-auto;
+}
+
+/* Page Header */
+.header {
+  @apply text-center mb-8;
+}
+
+.iconContainer {
+  @apply flex items-center justify-center mb-4;
+}
+
+.iconWrapper {
+  @apply bg-gradient-to-br from-primary-500 to-primary-700 p-3 rounded-xl shadow-lg;
+}
+
+.icon {
+  @apply w-8 h-8 text-white;
+}
+
+.title {
+  @apply text-4xl font-bold text-gray-900 dark:text-white mb-3;
+}
+
+.description {
+  @apply text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto;
+}
+
+/* Error Display */
+.errorContainer {
+  @apply mb-8;
+}
+
+/* Layout */
+.verticalLayout {
+  @apply space-y-8;
+}
+
+.uploadSection {
+  @apply space-y-6;
+}
+
+/* Action Buttons */
+.actionButtons {
+  @apply flex gap-4;
+}
+
+.analyzeButton {
+  @apply btn-primary flex-1 flex items-center justify-center gap-2;
+}
+
+.spinner {
+  @apply w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin;
+}
+
+.buttonIcon {
+  @apply w-5 h-5;
+}
+
+.resetButton {
+  @apply btn-secondary;
+}
+
+/* Loading Section */
+.loadingCard {
+  @apply card flex items-center justify-center p-12;
+}
+
+/* Results Section */
+.resultsSection {
+  @apply space-y-6;
+}
+
+/* Empty State */
+.emptyCard {
+  @apply card flex items-center justify-center text-center p-12 border-2 border-dashed;
+}
+
+.emptyIconWrapper {
+  @apply w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-full flex items-center justify-center mx-auto mb-4;
+}
+
+.emptyIcon {
+  @apply w-10 h-10 text-gray-400 dark:text-gray-500;
+}
+
+.emptyMessage {
+  @apply text-gray-500 dark:text-gray-400 font-medium;
+}
+
+.emptySubMessage {
+  @apply text-sm text-gray-400 dark:text-gray-500 mt-2;
+}
+
+/* Info Panel */
+.infoPanel {
+  @apply mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6;
+}
+
+.infoPanelTitle {
+  @apply font-semibold text-blue-900 dark:text-blue-200 mb-3;
+}
+
+.infoPanelList {
+  @apply space-y-2 text-sm text-blue-800 dark:text-blue-300;
+}
+
+.infoPanelItem {
+  @apply flex items-start gap-2;
+}
+
+.infoPanelNumber {
+  @apply font-bold;
+}

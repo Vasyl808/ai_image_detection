@@ -1,0 +1,162 @@
+/* Result Display Component Styles */
+
+.container {
+  @apply space-y-6;
+}
+
+/* Main Result Card */
+.resultCard {
+  @apply card;
+}
+
+.resultCardDeepfake {
+  @apply bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800;
+}
+
+.resultCardAuthentic {
+  @apply bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800;
+}
+
+.resultHeader {
+  @apply flex items-start justify-between mb-4;
+}
+
+.resultContent {
+  @apply flex items-center gap-3;
+}
+
+.icon {
+  @apply w-8 h-8 flex-shrink-0;
+}
+
+.iconDeepfake {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.iconAuthentic {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.resultTitle {
+  @apply text-2xl font-bold text-gray-900 dark:text-white;
+}
+
+.resultDescription {
+  @apply text-sm;
+}
+
+.descriptionDeepfake {
+  @apply text-red-700 dark:text-red-300;
+}
+
+.descriptionAuthentic {
+  @apply text-green-700 dark:text-green-300;
+}
+
+/* Grad-CAM Section */
+.gradcamCard {
+  @apply card;
+}
+
+.gradcamHeader {
+  @apply flex items-center gap-2 mb-4;
+}
+
+.gradcamIcon {
+  @apply w-5 h-5 text-primary-600 dark:text-primary-400;
+}
+
+.gradcamTitle {
+  @apply text-lg font-semibold text-gray-900 dark:text-white;
+}
+
+.gradcamImageContainer {
+  @apply mb-4;
+}
+
+.gradcamImage {
+  @apply w-full rounded-lg shadow-md;
+}
+
+.gradcamDescription {
+  @apply bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4;
+}
+
+.descriptionText {
+  @apply text-sm text-blue-900 dark:text-blue-200;
+}
+
+/* Interpretation Guide */
+.interpretationCard {
+  @apply card bg-gray-50 dark:bg-gray-800/50;
+}
+
+.interpretationTitle {
+  @apply text-sm font-semibold text-gray-900 dark:text-white mb-3;
+}
+
+.interpretationList {
+  @apply space-y-2 text-sm text-gray-600 dark:text-gray-400;
+}
+
+.interpretationItem {
+  @apply flex items-start gap-2;
+}
+
+.bullet {
+  @apply font-bold mt-0.5;
+}
+
+.bulletRed {
+  @apply text-red-600;
+}
+
+.bulletBlue {
+  @apply text-blue-600;
+}
+
+.bulletGray {
+  @apply text-gray-600;
+}
+
+.highlight {
+  @apply font-semibold;
+}
+
+.highlightRed {
+  @apply text-red-600;
+}
+
+.highlightBlue {
+  @apply text-blue-600;
+}
+
+/* Download Error */
+.errorCard {
+  @apply bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4;
+}
+
+.errorText {
+  @apply text-sm text-red-800 dark:text-red-200;
+}
+
+/* Action Buttons */
+.actionButtons {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+}
+
+.downloadButton {
+  @apply btn-primary flex items-center justify-center gap-2;
+}
+
+.spinner {
+  @apply w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin;
+}
+
+.buttonIcon {
+  @apply w-5 h-5;
+}
+
+.resetButton {
+  @apply btn-secondary flex items-center justify-center gap-2;
+}

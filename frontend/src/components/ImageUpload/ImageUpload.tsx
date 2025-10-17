@@ -8,6 +8,7 @@ import React, { useRef, useCallback } from "react";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import clsx from "clsx";
 import { INFO_MESSAGES } from "../../constants";
+import styles from "./ImageUpload.module.css";
 
 export interface ImageUploadProps {
   /** Callback when a valid image is selected */
@@ -80,8 +81,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   }, [disabled]);
 
   return (
-    <div className={clsx("card", className)}>
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+    <div className={clsx(styles.container, className)}>
+      <h2 className={styles.title}>
         Upload Image
       </h2>
 
@@ -90,40 +91,38 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         className={clsx(
-          "border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200",
+          styles.dropzone,
           {
-            "cursor-pointer hover:border-primary-400 dark:hover:border-primary-600 hover:bg-gray-50 dark:hover:bg-gray-700/50":
-              !disabled && !imagePreview,
-            "border-primary-300 dark:border-primary-700 bg-primary-50 dark:bg-primary-900/20":
-              imagePreview,
-            "border-gray-300 dark:border-gray-600": !imagePreview,
-            "opacity-50 cursor-not-allowed": disabled,
+            [styles.dropzoneActive]: !disabled && !imagePreview,
+            [styles.dropzoneWithPreview]: imagePreview,
+            [styles.dropzoneDefault]: !imagePreview,
+            [styles.dropzoneDisabled]: disabled,
           }
         )}
       >
         {imagePreview ? (
-          <div className="space-y-4">
+          <div className={styles.previewContainer}>
             <img
               src={imagePreview}
               alt="Preview"
-              className="max-h-64 mx-auto rounded-lg shadow-md"
+              className={styles.previewImage}
             />
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className={styles.previewText}>
               Click or drag to change image
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                <Upload className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+          <div className={styles.uploadPrompt}>
+            <div className={styles.iconWrapper}>
+              <div className={styles.iconCircle}>
+                <Upload className={styles.uploadIcon} />
               </div>
             </div>
-            <div>
-              <p className="text-base font-medium text-gray-900 dark:text-white mb-1">
+            <div className={styles.textContainer}>
+              <p className={styles.promptTitle}>
                 {INFO_MESSAGES.UPLOAD_PROMPT}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className={styles.promptInstructions}>
                 {INFO_MESSAGES.UPLOAD_INSTRUCTIONS}
               </p>
             </div>
@@ -136,14 +135,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           accept="image/*"
           onChange={handleFileChange}
           disabled={disabled}
-          className="hidden"
+          className={styles.fileInput}
           aria-label="Upload image file"
         />
       </div>
 
       {imagePreview && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-          <ImageIcon className="w-4 h-4" />
+        <div className={styles.statusBar}>
+          <ImageIcon className={styles.statusIcon} />
           <span>{INFO_MESSAGES.IMAGE_READY}</span>
         </div>
       )}

@@ -7,6 +7,7 @@
 import React from "react";
 import { XCircle, AlertCircle } from "lucide-react";
 import clsx from "clsx";
+import styles from "./ErrorMessage.module.css";
 
 export interface ErrorMessageProps {
   /** Error message to display */
@@ -36,34 +37,34 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   return (
     <div
       className={clsx(
-        "card",
+        styles.container,
         {
-          "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800": isError,
-          "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800": !isError,
+          [styles.containerError]: isError,
+          [styles.containerWarning]: !isError,
         },
         className
       )}
       role="alert"
     >
-      <div className="flex items-start gap-3">
+      <div className={styles.content}>
         {isError ? (
-          <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+          <XCircle className={clsx(styles.icon, styles.iconError)} />
         ) : (
-          <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
+          <AlertCircle className={clsx(styles.icon, styles.iconWarning)} />
         )}
-        <div className="flex-1">
+        <div className={styles.textContainer}>
           <p
-            className={clsx("font-medium", {
-              "text-red-900 dark:text-red-200": isError,
-              "text-yellow-900 dark:text-yellow-200": !isError,
+            className={clsx(styles.title, {
+              [styles.titleError]: isError,
+              [styles.titleWarning]: !isError,
             })}
           >
             {title}
           </p>
           <p
-            className={clsx("text-sm mt-1", {
-              "text-red-700 dark:text-red-300": isError,
-              "text-yellow-700 dark:text-yellow-300": !isError,
+            className={clsx(styles.message, {
+              [styles.messageError]: isError,
+              [styles.messageWarning]: !isError,
             })}
           >
             {message}
@@ -73,16 +74,16 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
           <button
             onClick={onDismiss}
             className={clsx(
-              "flex-shrink-0 p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors",
+              styles.dismissButton,
               {
-                "text-red-600 dark:text-red-400": isError,
-                "text-yellow-600 dark:text-yellow-400": !isError,
+                [styles.dismissButtonError]: isError,
+                [styles.dismissButtonWarning]: !isError,
               }
             )}
             aria-label="Dismiss error"
             type="button"
           >
-            <XCircle className="w-4 h-4" />
+            <XCircle className={styles.dismissIcon} />
           </button>
         )}
       </div>

@@ -6,6 +6,7 @@
 
 import React from "react";
 import clsx from "clsx";
+import styles from "./LoadingSpinner.module.css";
 
 export interface LoadingSpinnerProps {
   /** Loading message to display */
@@ -25,28 +26,28 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   className,
 }) => {
   const sizeClasses = {
-    sm: "w-4 h-4 border-2",
-    md: "w-8 h-8 border-2",
-    lg: "w-12 h-12 border-3",
+    sm: styles.spinnerSm,
+    md: styles.spinnerMd,
+    lg: styles.spinnerLg,
   };
 
   return (
     <div
-      className={clsx("flex flex-col items-center justify-center gap-3", className)}
+      className={clsx(styles.container, className)}
       role="status"
       aria-live="polite"
     >
       <div
         className={clsx(
-          "border-primary-200 border-t-primary-600 rounded-full animate-spin",
+          styles.spinner,
           sizeClasses[size]
         )}
         aria-hidden="true"
       />
       {message && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">{message}</p>
+        <p className={styles.message}>{message}</p>
       )}
-      <span className="sr-only">{message}</span>
+      <span className={styles.srOnly}>{message}</span>
     </div>
   );
 };

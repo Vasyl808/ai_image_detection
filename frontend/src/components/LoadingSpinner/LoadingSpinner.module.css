@@ -1,0 +1,47 @@
+/* Loading Spinner Component Styles */
+
+.container {
+  @apply flex flex-col items-center justify-center gap-3;
+}
+
+.spinner {
+  @apply border-primary-200 border-t-primary-600 rounded-full animate-spin;
+}
+
+.spinnerSm {
+  @apply w-4 h-4 border-2;
+}
+
+.spinnerMd {
+  @apply w-8 h-8 border-2;
+}
+
+/* Loading Spinner Component Styles */
+
+.container {
+  @apply flex flex-col items-center justify-center gap-3;
+}
+
+.spinner {
+  @apply border-primary-200 border-t-primary-600 rounded-full animate-spin;
+}
+
+.spinnerSm {
+  @apply w-4 h-4 border-2;
+}
+
+.spinnerMd {
+  @apply w-8 h-8 border-2;
+}
+
+.spinnerLg {
+  @apply w-12 h-12 border-4;
+}
+
+.message {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.srOnly {
+  @apply sr-only;
+}

@@ -1,0 +1,73 @@
+/* Error Message Component Styles */
+
+.container {
+  @apply card;
+}
+
+.containerError {
+  @apply bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800;
+}
+
+.containerWarning {
+  @apply bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800;
+}
+
+.content {
+  @apply flex items-start gap-3;
+}
+
+.icon {
+  @apply w-5 h-5 flex-shrink-0;
+}
+
+.iconError {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.iconWarning {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+.textContainer {
+  @apply flex-1;
+}
+
+.title {
+  @apply font-medium;
+}
+
+.titleError {
+  @apply text-red-900 dark:text-red-200;
+}
+
+.titleWarning {
+  @apply text-yellow-900 dark:text-yellow-200;
+}
+
+.message {
+  @apply text-sm mt-1;
+}
+
+.messageError {
+  @apply text-red-700 dark:text-red-300;
+}
+
+.messageWarning {
+  @apply text-yellow-700 dark:text-yellow-300;
+}
+
+.dismissButton {
+  @apply flex-shrink-0 p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors;
+}
+
+.dismissButtonError {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.dismissButtonWarning {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+.dismissIcon {
+  @apply w-4 h-4;
+}

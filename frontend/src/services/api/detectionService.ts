@@ -8,7 +8,6 @@ import { AxiosError } from "axios";
 import apiClient from "./apiClient";
 import type {
   DetectionResponse,
-  HealthCheckResponse,
   ApiError,
 } from "../../types";
 
@@ -47,42 +46,5 @@ export async function analyzeImage(imageFile: File): Promise<DetectionResponse> 
     }
 
     throw new Error("Failed to analyze image");
-  }
-}
-
-/**
- * Check API health status
- * 
- * @returns Health check response
- * @throws {Error} If the request fails
- */
-export async function checkHealth(): Promise<HealthCheckResponse> {
-  try {
-    const response = await apiClient.get<HealthCheckResponse>("/health");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to check health status");
-  }
-}
-
-/**
- * Get storage statistics
- * 
- * @returns Storage statistics
- * @throws {Error} If the request fails
- */
-export async function getStorageStats(): Promise<{
-  success: boolean;
-  stats: {
-    file_count: number;
-    total_size_bytes: number;
-    total_size_mb: number;
-  };
-}> {
-  try {
-    const response = await apiClient.get("/detect/stats");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to get storage statistics");
   }
 }

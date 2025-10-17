@@ -31,15 +31,6 @@ export interface DetectionResponse {
 }
 
 /**
- * Health check response
- */
-export interface HealthCheckResponse {
-  status: string;
-  model_loaded: boolean;
-  version: string;
-}
-
-/**
  * API error response
  */
 export interface ApiError {

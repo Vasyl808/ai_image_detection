@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { API_BASE_URL, GRADCAM_MESSAGES, REPORT_MESSAGES } from "../../constants";
 import { useReportDownload } from "../../hooks";
 import type { DetectionResponse } from "../../types";
+import styles from "./ResultDisplay.module.css";
 
 export interface ResultDisplayProps {
   /** Detection result to display */
@@ -42,29 +43,29 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset })
   };
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Main Result Card */}
       <div
-        className={clsx("card", {
-          "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800": isDeepfake,
-          "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800": !isDeepfake,
+        className={clsx(styles.resultCard, {
+          [styles.resultCardDeepfake]: isDeepfake,
+          [styles.resultCardAuthentic]: !isDeepfake,
         })}
       >
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
+        <div className={styles.resultHeader}>
+          <div className={styles.resultContent}>
             {isDeepfake ? (
-              <XCircle className="w-8 h-8 text-red-600 dark:text-red-400 flex-shrink-0" />
+              <XCircle className={clsx(styles.icon, styles.iconDeepfake)} />
             ) : (
-              <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400 flex-shrink-0" />
+              <CheckCircle className={clsx(styles.icon, styles.iconAuthentic)} />
             )}
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h2 className={styles.resultTitle}>
                 {prediction.label}
               </h2>
               <p
-                className={clsx("text-sm", {
-                  "text-red-700 dark:text-red-300": isDeepfake,
-                  "text-green-700 dark:text-green-300": !isDeepfake,
+                className={clsx(styles.resultDescription, {
+                  [styles.descriptionDeepfake]: isDeepfake,
+                  [styles.descriptionAuthentic]: !isDeepfake,
                 })}
               >
                 {isDeepfake
@@ -74,63 +75,64 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset })
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Grad-CAM Visualization */}
-      <div className="card">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+      {/* Grad-CAM Visualization */}
+      <div className={styles.gradcamCard}>
+        <div className={styles.gradcamHeader}>
+          <TrendingUp className={styles.gradcamIcon} />
+          <h3 className={styles.gradcamTitle}>
             {GRADCAM_MESSAGES.TITLE}
           </h3>
         </div>
 
-        <div className="mb-4">
+        <div className={styles.gradcamImageContainer}>
           <img
             src={`${API_BASE_URL}${explanation.gradcam_image}`}
             alt="Grad-CAM visualization"
-            className="w-full rounded-lg shadow-md"
+            className={styles.gradcamImage}
             crossOrigin="anonymous"
             loading="lazy"
           />
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-          <p className="text-sm text-blue-900 dark:text-blue-200">
+        <div className={styles.gradcamDescription}>
+          <p className={styles.descriptionText}>
             {explanation.description}
           </p>
         </div>
       </div>
 
       {/* Interpretation Guide */}
-      <div className="card bg-gray-50 dark:bg-gray-800/50">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+      <div className={styles.interpretationCard}>
+        <h3 className={styles.interpretationTitle}>
           {GRADCAM_MESSAGES.INTERPRETATION_TITLE}
         </h3>
-        <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li className="flex items-start gap-2">
-            <span className="text-red-600 font-bold mt-0.5" aria-hidden="true">
+        <ul className={styles.interpretationList}>
+          <li className={styles.interpretationItem}>
+            <span className={clsx(styles.bullet, styles.bulletRed)} aria-hidden="true">
               •
             </span>
             <span>
-              <strong className="text-red-600">
+              <strong className={clsx(styles.highlight, styles.highlightRed)}>
                 {GRADCAM_MESSAGES.RED_YELLOW_AREAS}:
               </strong>{" "}
               {GRADCAM_MESSAGES.RED_YELLOW_DESCRIPTION}
             </span>
           </li>
-          <li className="flex items-start gap-2">
-            <span className="text-blue-600 font-bold mt-0.5" aria-hidden="true">
+          <li className={styles.interpretationItem}>
+            <span className={clsx(styles.bullet, styles.bulletBlue)} aria-hidden="true">
               •
             </span>
             <span>
-              <strong className="text-blue-600">
+              <strong className={clsx(styles.highlight, styles.highlightBlue)}>
                 {GRADCAM_MESSAGES.BLUE_GREEN_AREAS}:
               </strong>{" "}
               {GRADCAM_MESSAGES.BLUE_GREEN_DESCRIPTION}
             </span>
           </li>
-          <li className="flex items-start gap-2">
-            <span className="text-gray-600 font-bold mt-0.5" aria-hidden="true">
+          <li className={styles.interpretationItem}>
+            <span className={clsx(styles.bullet, styles.bulletGray)} aria-hidden="true">
               •
             </span>
             <span>{GRADCAM_MESSAGES.GENERAL_INFO}</span>
@@ -140,29 +142,29 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset })
 
       {/* Download Error */}
       {downloadError && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-          <p className="text-sm text-red-800 dark:text-red-200">{downloadError}</p>
+        <div className={styles.errorCard}>
+          <p className={styles.errorText}>{downloadError}</p>
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={styles.actionButtons}>
         {/* Download PDF Report Button */}
         <button
           onClick={onDownloadReport}
           disabled={isDownloading || !session_id}
-          className="btn-primary flex items-center justify-center gap-2"
+          className={styles.downloadButton}
           type="button"
           title={!session_id ? "Session expired" : "Download comprehensive PDF report"}
         >
           {isDownloading ? (
             <>
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className={styles.spinner} />
               {REPORT_MESSAGES.GENERATING}
             </>
           ) : (
             <>
-              <Download className="w-5 h-5" />
+              <Download className={styles.buttonIcon} />
               {REPORT_MESSAGES.DOWNLOAD_BUTTON}
             </>
           )}
@@ -171,14 +173,13 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onReset })
         {/* Reset Button */}
         <button
           onClick={onReset}
-          className="btn-secondary flex items-center justify-center gap-2"
+          className={styles.resetButton}
           type="button"
         >
-          <RefreshCw className="w-5 h-5" />
+          <RefreshCw className={styles.buttonIcon} />
           Analyze Another Image
         </button>
       </div>
     </div>
-  </div>
   );
 };

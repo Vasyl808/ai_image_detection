@@ -1,0 +1,85 @@
+/* Footer Component Styles */
+
+.footer {
+  @apply mt-auto bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800;
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+}
+
+.footerGrid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+}
+
+/* Brand Section */
+.brandSection {
+  @apply space-y-3;
+}
+
+.brandHeader {
+  @apply flex items-center gap-2 mb-3;
+}
+
+.brandIcon {
+  @apply bg-gradient-to-br from-primary-500 to-primary-700 p-2 rounded-lg;
+}
+
+.brandIconImage {
+  @apply w-5 h-5 text-white;
+}
+
+.brandName {
+  @apply font-bold text-gray-900 dark:text-white;
+}
+
+.brandDescription {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+/* Technology Section */
+.techSection {
+  @apply space-y-3;
+}
+
+.sectionTitle {
+  @apply font-semibold text-gray-900 dark:text-white mb-3;
+}
+
+.techList {
+  @apply space-y-2 text-sm text-gray-600 dark:text-gray-400;
+}
+
+/* About Section */
+.aboutSection {
+  @apply space-y-3;
+}
+
+.aboutText {
+  @apply text-sm text-gray-600 dark:text-gray-400 mb-3;
+}
+
+.version {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+/* Bottom Bar */
+.bottomBar {
+  @apply mt-8 pt-8 border-t border-gray-200 dark:border-gray-800;
+}
+
+.bottomContent {
+  @apply flex flex-col sm:flex-row items-center justify-between gap-4;
+}
+
+.copyright {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.madeWith {
+  @apply flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400;
+}
+
+.heartIcon {
+  @apply w-4 h-4 text-red-500 fill-red-500;
+}

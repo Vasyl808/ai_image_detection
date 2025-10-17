@@ -14,84 +14,85 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
+import styles from "./LandingPage.module.css";
 
 /**
  * Landing page component
  */
 export const LandingPage: FC = () => {
   return (
-    <div className="relative">
+    <div className={styles.container}>
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className={styles.heroSection}>
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-primary-950 -z-10" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-200 dark:bg-primary-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob" />
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-200 dark:bg-purple-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-pink-200 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+        <div className={styles.backgroundGradient} />
+        <div className={`${styles.blob} ${styles.blobPrimary}`} />
+        <div className={`${styles.blob} ${styles.blobPurple}`} />
+        <div className={`${styles.blob} ${styles.blobPink}`} />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
-          <div className="text-center space-y-8">
+        <div className={styles.heroContent}>
+          <div className={styles.heroInner}>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-full text-sm font-medium text-primary-700 dark:text-primary-300">
-              <Sparkles className="w-4 h-4" />
+            <div className={styles.badge}>
+              <Sparkles className={styles.badgeIcon} />
               AI-Powered Detection Technology
             </div>
 
             {/* Heading */}
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 dark:text-white">
+            <h1 className={styles.heroTitle}>
               Detect Deepfakes
             </h1>
 
             {/* Description */}
-            <p className="max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-400">
+            <p className={styles.heroDescription}>
               Advanced neural network technology that analyzes images to detect
               AI-generated or manipulated content. Get instant results with visual
               explanations powered by Grad-CAM.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className={styles.ctaButtons}>
               <Link
                 to="/detect"
-                className="group relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                className={styles.ctaPrimary}
               >
-                <Shield className="w-5 h-5" />
+                <Shield className={styles.ctaIcon} />
                 Start Detection
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className={styles.ctaIconAnimate} />
               </Link>
 
               <a
                 href="#features"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold rounded-xl border border-gray-200 dark:border-gray-700 shadow hover:shadow-lg transition-all"
+                className={styles.ctaSecondary}
               >
                 Learn More
-                <Eye className="w-5 h-5" />
+                <Eye className={styles.ctaIcon} />
               </a>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto pt-12">
-              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                  99%+
+            <div className={styles.stats}>
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>
+                  95%+
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className={styles.statLabel}>
                   Detection Accuracy
                 </div>
               </div>
-              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>
                   &lt;2s
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className={styles.statLabel}>
                   Analysis Time
                 </div>
               </div>
-              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>
                   100%
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Free to Use</div>
+                <div className={styles.statLabel}>Free to Use</div>
               </div>
             </div>
           </div>
@@ -99,68 +100,68 @@ export const LandingPage: FC = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-white dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+      <section id="features" className={styles.featuresSection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
               Powerful Features
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className={styles.sectionDescription}>
               Built with cutting-edge technology to provide the most accurate deepfake
               detection
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className={styles.featuresGrid}>
             {/* Feature 1 */}
-            <div className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-xl transition-all transform hover:scale-105">
-              <div className="bg-gradient-to-br from-primary-500 to-primary-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Shield className="w-6 h-6 text-white" />
+            <div className={`${styles.featureCard} ${styles.featureCardPrimary}`}>
+              <div className={`${styles.featureIcon} ${styles.featureIconPrimary}`}>
+                <Shield className={styles.featureIconImage} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className={styles.featureTitle}>
                 AI Detection
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.featureDescription}>
                 EfficientNet-B0 neural network trained on thousands of images for accurate
                 detection
               </p>
             </div>
 
             {/* Feature 2 */}
-            <div className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-xl transition-all transform hover:scale-105">
-              <div className="bg-gradient-to-br from-purple-500 to-purple-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Eye className="w-6 h-6 text-white" />
+            <div className={`${styles.featureCard} ${styles.featureCardPurple}`}>
+              <div className={`${styles.featureIcon} ${styles.featureIconPurple}`}>
+                <Eye className={styles.featureIconImage} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className={styles.featureTitle}>
                 Visual Explanations
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.featureDescription}>
                 Grad-CAM heatmaps show exactly which regions influenced the detection
               </p>
             </div>
 
             {/* Feature 3 */}
-            <div className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-700 hover:shadow-xl transition-all transform hover:scale-105">
-              <div className="bg-gradient-to-br from-pink-500 to-pink-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Zap className="w-6 h-6 text-white" />
+            <div className={`${styles.featureCard} ${styles.featureCardPink}`}>
+              <div className={`${styles.featureIcon} ${styles.featureIconPink}`}>
+                <Zap className={styles.featureIconImage} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className={styles.featureTitle}>
                 Lightning Fast
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.featureDescription}>
                 Get results in seconds with optimized inference and efficient processing
               </p>
             </div>
 
             {/* Feature 4 */}
-            <div className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-xl transition-all transform hover:scale-105">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Lock className="w-6 h-6 text-white" />
+            <div className={`${styles.featureCard} ${styles.featureCardBlue}`}>
+              <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}>
+                <Lock className={styles.featureIconImage} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className={styles.featureTitle}>
                 Privacy First
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.featureDescription}>
                 Images are processed securely and never stored permanently on our servers
               </p>
             </div>
@@ -169,53 +170,53 @@ export const LandingPage: FC = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+      <section className={styles.howItWorksSection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
               How It Works
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className={styles.sectionDescription}>
               Three simple steps to detect deepfakes in your images
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className={styles.stepsGrid}>
             {/* Step 1 */}
-            <div className="relative text-center">
-              <div className="bg-gradient-to-br from-primary-500 to-primary-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <span className="text-2xl font-bold text-white">1</span>
+            <div className={styles.stepContainer}>
+              <div className={`${styles.stepNumber} ${styles.stepNumberPrimary}`}>
+                <span className={styles.stepNumberText}>1</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              <h3 className={styles.stepTitle}>
                 Upload Image
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.stepDescription}>
                 Drag and drop or click to upload any image you want to analyze
               </p>
             </div>
 
             {/* Step 2 */}
-            <div className="relative text-center">
-              <div className="bg-gradient-to-br from-purple-500 to-purple-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <span className="text-2xl font-bold text-white">2</span>
+            <div className={styles.stepContainer}>
+              <div className={`${styles.stepNumber} ${styles.stepNumberPurple}`}>
+                <span className={styles.stepNumberText}>2</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              <h3 className={styles.stepTitle}>
                 AI Analysis
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.stepDescription}>
                 Our neural network analyzes the image for signs of manipulation
               </p>
             </div>
 
             {/* Step 3 */}
-            <div className="relative text-center">
-              <div className="bg-gradient-to-br from-pink-500 to-pink-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <span className="text-2xl font-bold text-white">3</span>
+            <div className={styles.stepContainer}>
+              <div className={`${styles.stepNumber} ${styles.stepNumberPink}`}>
+                <span className={styles.stepNumberText}>3</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              <h3 className={styles.stepTitle}>
                 Get Results
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={styles.stepDescription}>
                 View results and visual explanations of the detection
               </p>
             </div>
@@ -224,21 +225,21 @@ export const LandingPage: FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-purple-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
+      <section className={styles.ctaSection}>
+        <div className={styles.ctaContainer}>
+          <h2 className={styles.ctaTitle}>
             Ready to Detect Deepfakes?
           </h2>
-          <p className="text-xl text-primary-100 mb-8">
+          <p className={styles.ctaDescription}>
             Start analyzing images now with our advanced AI detection system
           </p>
           <Link
             to="/detect"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-gray-100 text-primary-700 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+            className={styles.ctaButton}
           >
-            <Shield className="w-5 h-5" />
+            <Shield className={styles.ctaIcon} />
             Start Detection Now
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className={styles.ctaIcon} />
           </Link>
         </div>
       </section>
