@@ -142,9 +142,23 @@ def apply_colormap_on_image(
     """
     # Convert PIL Image to numpy array
     if isinstance(original_image, Image.Image):
+        # Ensure image is in RGB format
+        if original_image.mode != 'RGB':
+            original_image = original_image.convert('RGB')
         org_img = np.array(original_image)
     else:
         org_img = original_image
+        # Ensure numpy array is RGB (3 channels)
+        if org_img.ndim == 2:
+            # Grayscale image - convert to RGB
+            org_img = cv2.cvtColor(org_img, cv2.COLOR_GRAY2RGB)
+        elif org_img.shape[2] == 4:
+            # RGBA image - convert to RGB
+            org_img = cv2.cvtColor(org_img, cv2.COLOR_RGBA2RGB)
+        elif org_img.shape[2] != 3:
+            # Unknown format - try to convert
+            logger.warning(f"Unexpected image format with {org_img.shape[2]} channels")
+            org_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2RGB)
     
     # Resize activation map to match original image dimensions
     height, width = org_img.shape[:2]
