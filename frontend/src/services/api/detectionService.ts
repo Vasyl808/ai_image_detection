@@ -4,7 +4,6 @@
  * API service for deepfake detection operations
  */
 
-import { AxiosError } from "axios";
 import apiClient from "./apiClient";
 import type {
   DetectionResponse,
@@ -30,8 +29,9 @@ export async function analyzeImage(imageFile: File): Promise<DetectionResponse> 
     });
 
     return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
+  } catch (error: any) {
+    // Check if it's an Axios error (works with both real and mocked errors)
+    if (error.isAxiosError || (error.response || error.request)) {
       const apiError = error.response?.data as ApiError;
 
       if (error.response) {

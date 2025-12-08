@@ -4,7 +4,6 @@
  * API service for report generation and download operations
  */
 
-import { AxiosError } from "axios";
 import apiClient from "./apiClient";
 
 /**
@@ -28,9 +27,10 @@ export async function downloadReport(sessionId: string): Promise<{
     let filename = `deepfake_report_${Date.now()}.pdf`;
 
     if (contentDisposition) {
-      const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+      const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
       if (filenameMatch && filenameMatch[1]) {
-        filename = filenameMatch[1];
+        // Remove surrounding quotes if present
+        filename = filenameMatch[1].replace(/['"]/g, '');
       }
     }
 
@@ -38,8 +38,9 @@ export async function downloadReport(sessionId: string): Promise<{
       blob: response.data,
       filename,
     };
-  } catch (error) {
-    if (error instanceof AxiosError) {
+  } catch (error: any) {
+    // Check if it's an Axios error (works with both real and mocked errors)
+    if (error.isAxiosError || (error.response || error.request)) {
       if (error.response?.status === 404) {
         throw new Error(
           "Session not found or expired. Please analyze the image again."

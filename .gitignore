@@ -41,9 +41,21 @@ build/
 *.log
 
 # Testing
-.coverage
 htmlcov/
 .pytest_cache/
+.hypothesis/
+
+# Frontend test coverage
+frontend/coverage/
+
+# Backend test coverage
+backend/coverage/
+backend/htmlcov/
+
+# IDE specific coverage files
+coverage.xml
+.cache/
+nosetests.xml
 
 # Model weights
 *.pth
