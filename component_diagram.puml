@@ -1,0 +1,89 @@
+@startuml
+!theme plain
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+actor "User" as user
+
+package "Frontend Container (Docker)" {
+    component "Nginx" as nginx
+    
+    package "React Application" {
+        component "UI Components" as ui
+        
+        package "Frontend Services" {
+            component "DetectionService (Client)" as client_detection
+            component "ReportService (Client)" as client_report
+            component "API Client" as api_client
+        }
+    }
+}
+
+package "Backend Container (Docker)" {
+    component "Uvicorn" as uvicorn
+    
+    package "FastAPI Application" {
+        component "Main App" as main_app
+        
+        package "API Endpoints (v1)" {
+            component "Detection Router" as api_detection
+            component "Reports Router" as api_reports
+            component "Health Router" as api_health
+        }
+        
+        package "Backend Services" {
+            component "DetectionService (Server)" as server_detection
+            component "FileService" as file_service
+            component "PDFReportService" as report_service
+        }
+        
+        component "Model Loader" as model_loader
+    }
+    
+    file "EfficientNet Model (.pth)" as model_file
+}
+
+package "ML Project" {
+    component "Jupyter Notebooks" as notebooks
+    note right of notebooks
+        - EffNetB0ClassifierModel
+        - InceptionV3ClassifierModel
+        - XceptionClassifierModel
+    end note
+}
+
+database "File System" {
+    folder "Results Directory" as results
+}
+
+' Interactions
+user --> nginx : HTTP/HTTPS
+nginx --> ui : Serves
+
+ui --> client_detection : Uses
+ui --> client_report : Uses
+
+client_detection --> api_client : Uses
+client_report --> api_client : Uses
+
+api_client --> uvicorn : HTTP Requests (JSON/Multipart)
+uvicorn --> main_app : ASGI
+
+main_app --> api_detection : Routes /detect
+main_app --> api_reports : Routes /reports
+main_app --> api_health : Routes /health
+
+api_detection --> server_detection : Calls
+api_reports --> report_service : Calls
+
+server_detection --> model_loader : Uses
+server_detection --> file_service : Saves Images
+server_detection --> report_service : Generates Report
+
+report_service --> file_service : Saves PDF
+
+model_loader ..> model_file : Loads
+notebooks ..> model_file : Trains & Exports
+
+file_service --> results : Reads/Writes
+@enduml
