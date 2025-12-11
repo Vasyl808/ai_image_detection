@@ -54,5 +54,4 @@ class ErrorResponse(BaseModel):
     error_code: Optional[str] = Field(None, description="Optional error code")
 
 
-# Update forward refs
 PredictionResult.model_rebuild()
